@@ -1,0 +1,111 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.bean {
+  background: var(--paper);
+  border: 1px solid var(--ink-line);
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.bean:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+}
+
+.beanImage {
+  position: relative;
+  aspect-ratio: 5 / 6;
+  background: var(--paper-3);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.productImage {
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+}
+
+.tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-family: var(--serif);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 4px 8px;
+}
+
+.beanBody {
+  padding: 18px 18px 22px;
+}
+
+.beanEn {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.beanKo {
+  font-family: var(--serif-ko);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-2);
+  margin-top: 2px;
+}
+
+.beanNote {
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  margin: 10px 0;
+  line-height: 1.5;
+  min-height: 36px;
+}
+
+.beanFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px dashed var(--ink-line);
+  padding-top: 12px;
+  margin-top: 4px;
+}
+
+.beanPrice {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.beanCta {
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--ink-2);
+}
+
+@media (max-width: 820px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .beanEn {
+    font-size: 18px;
+  }
+}
