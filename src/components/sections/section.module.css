@@ -18,6 +18,48 @@
   background: var(--paper-2);
 }
 
+.sectionDark {
+  background: var(--ink);
+  color: var(--paper-soft);
+}
+
+.sectionDark em {
+  color: var(--paper-soft);
+}
+
+.headCenter {
+  text-align: center;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.numLight {
+  color: rgba(225, 220, 215, 0.7);
+}
+
+.sectionDark .sectionTitle {
+  color: var(--paper);
+}
+
+.sectionDark .sectionSub {
+  color: var(--paper-soft);
+  opacity: 0.85;
+}
+
+.textLink {
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--ink-2);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.textLink:hover {
+  color: var(--ink);
+}
+
 .eyebrow {
   font-family: var(--serif);
   font-size: 11px;

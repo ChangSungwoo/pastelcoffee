@@ -7,7 +7,7 @@ type EditorialButtonProps = {
   href: string
   variant?: "outline" | "solid" | "ghost"
   tone?: "ink" | "hero"
-  size?: "default" | "lg"
+  size?: "default" | "lg" | "sm"
   className?: string
   children: React.ReactNode
 }
@@ -29,6 +29,7 @@ export function EditorialButton({
         variant === "ghost" && styles.ghost,
         tone === "hero" && styles.heroTone,
         size === "lg" && styles.lg,
+        size === "sm" && styles.sm,
         className,
       )}
     >
