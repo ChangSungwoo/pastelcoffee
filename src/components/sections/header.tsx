@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Link from "next/link"
 import { Fragment } from "react"
 
@@ -6,33 +5,58 @@ import { MAIN_NAV } from "@/lib/constants"
 
 import styles from "./header.module.css"
 
+const IconSearch = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="11" cy="11" r="7" />
+    <path d="M21 21l-4.3-4.3" />
+  </svg>
+)
+
+const IconStar = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 3l2.6 5.6 6 .9-4.4 4.4 1 6.1L12 17l-5.3 3 1-6.1L3.4 9.5l6-.9L12 3z" />
+  </svg>
+)
+
+const IconBag = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M5 8h14l-1 12H6L5 8z" />
+    <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+  </svg>
+)
+
+const IconMenu = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M3 7h18M3 12h18M3 17h18" />
+  </svg>
+)
+
 export function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.desktop}>
         <div className={styles.top}>
           <div className={styles.eyebrow}>SEOUL · ROASTERY · SINCE 2011</div>
-          <Link href="/" className={styles.logo}>
-            <Image
-              src="/assets/logo-wordmark-dark.svg"
-              alt="Pastel Coffee Works"
-              width={200}
-              height={28}
-              priority
-            />
+
+          <Link href="/" className={styles.wordmark} aria-label="Pastel Coffee Works">
+            Pastel Coffee Works
           </Link>
+
           <div className={styles.right}>
-            <button type="button" className={styles.search}>
-              ⌕ &nbsp;Search
+            <button type="button" className={styles.search} aria-label="search">
+              <IconSearch />
+              <span>Search</span>
             </button>
             <button type="button" className={styles.iconBtn} aria-label="wishlist">
-              ♡
+              <IconStar />
             </button>
             <button type="button" className={styles.iconBtn} aria-label="cart">
-              ⛁ 0
+              <IconBag />
+              <span className={styles.iconBtnCount}>0</span>
             </button>
           </div>
         </div>
+
         <nav className={styles.nav} aria-label="Main">
           {MAIN_NAV.map((item, index) => (
             <Fragment key={item.href}>
@@ -49,20 +73,13 @@ export function Header() {
 
       <div className={styles.mobile}>
         <button type="button" className={styles.iconBtn} aria-label="menu">
-          ≡
+          <IconMenu />
         </button>
-        <Link href="/" className={styles.logo}>
-          <Image
-            src="/assets/logo-wordmark-dark.svg"
-            alt="Pastel Coffee Works"
-            width={140}
-            height={16}
-            className={styles.logoMobile}
-            priority
-          />
+        <Link href="/" className={styles.wordmarkMobile} aria-label="Pastel Coffee Works">
+          Pastel Coffee Works
         </Link>
         <button type="button" className={styles.iconBtn} aria-label="cart">
-          ⛁
+          <IconBag />
         </button>
       </div>
     </header>
