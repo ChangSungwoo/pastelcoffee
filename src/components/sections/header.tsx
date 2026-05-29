@@ -1,6 +1,9 @@
+"use client"
+
 import Link from "next/link"
 import { Fragment } from "react"
 
+import { useIsMobile } from "@/hooks/use-is-mobile"
 import { MAIN_NAV } from "@/lib/constants"
 
 import styles from "./header.module.css"
@@ -31,57 +34,69 @@ const IconMenu = () => (
   </svg>
 )
 
-export function Header() {
+function HeaderDesktop() {
   return (
-    <header className={styles.header}>
-      <div className={styles.desktop}>
-        <div className={styles.top}>
-          <div className={styles.eyebrow}>SEOUL · ROASTERY · SINCE 2011</div>
+    <div className={styles.desktop}>
+      <div className={styles.top}>
+        <div className={styles.eyebrow}>SEOUL · ROASTERY · SINCE 2011</div>
 
-          <Link href="/" className={styles.wordmark} aria-label="Pastel Coffee Works">
-            Pastel Coffee Works
-          </Link>
-
-          <div className={styles.right}>
-            <button type="button" className={styles.search} aria-label="search">
-              <IconSearch />
-              <span>Search</span>
-            </button>
-            <button type="button" className={styles.iconBtn} aria-label="wishlist">
-              <IconStar />
-            </button>
-            <button type="button" className={styles.iconBtn} aria-label="cart">
-              <IconBag />
-              <span className={styles.iconBtnCount}>0</span>
-            </button>
-          </div>
-        </div>
-
-        <nav className={styles.nav} aria-label="Main">
-          {MAIN_NAV.map((item, index) => (
-            <Fragment key={item.href}>
-              {index > 0 && (
-                <span className={styles.navSep} aria-hidden="true">
-                  ·
-                </span>
-              )}
-              <Link href={item.href}>{item.label}</Link>
-            </Fragment>
-          ))}
-        </nav>
-      </div>
-
-      <div className={styles.mobile}>
-        <button type="button" className={styles.iconBtn} aria-label="menu">
-          <IconMenu />
-        </button>
-        <Link href="/" className={styles.wordmarkMobile} aria-label="Pastel Coffee Works">
+        <Link href="/" className={styles.wordmark} aria-label="Pastel Coffee Works">
           Pastel Coffee Works
         </Link>
-        <button type="button" className={styles.iconBtn} aria-label="cart">
-          <IconBag />
-        </button>
+
+        <div className={styles.right}>
+          <button type="button" className={styles.search} aria-label="search">
+            <IconSearch />
+            <span>Search</span>
+          </button>
+          <button type="button" className={styles.iconBtn} aria-label="wishlist">
+            <IconStar />
+          </button>
+          <button type="button" className={styles.iconBtn} aria-label="cart">
+            <IconBag />
+            <span className={styles.iconBtnCount}>0</span>
+          </button>
+        </div>
       </div>
+
+      <nav className={styles.nav} aria-label="Main">
+        {MAIN_NAV.map((item, index) => (
+          <Fragment key={item.href}>
+            {index > 0 && (
+              <span className={styles.navSep} aria-hidden="true">
+                ·
+              </span>
+            )}
+            <Link href={item.href}>{item.label}</Link>
+          </Fragment>
+        ))}
+      </nav>
+    </div>
+  )
+}
+
+function HeaderMobile() {
+  return (
+    <div className={styles.mobile}>
+      <button type="button" className={styles.iconBtn} aria-label="menu">
+        <IconMenu />
+      </button>
+      <Link href="/" className={styles.wordmarkMobile} aria-label="Pastel Coffee Works">
+        Pastel Coffee Works
+      </Link>
+      <button type="button" className={styles.iconBtn} aria-label="cart">
+        <IconBag />
+      </button>
+    </div>
+  )
+}
+
+export function Header() {
+  const isMobile = useIsMobile()
+
+  return (
+    <header className={styles.header}>
+      {isMobile ? <HeaderMobile /> : <HeaderDesktop />}
     </header>
   )
 }
