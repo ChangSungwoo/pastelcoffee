@@ -32,13 +32,17 @@ export function adaptCafe24Product(raw: Cafe24RawProduct): CoffeeProduct {
   let en = "Coffee";
   let ko = raw.product_name;
 
+  if (raw.eng_product_name) {
+    en = raw.eng_product_name.split(" ")[0] ?? raw.eng_product_name;
+  }
+
   if (raw.product_name.includes("·")) {
     const parts = raw.product_name.split("·");
-    en = parts[0].trim();
+    if (!raw.eng_product_name) en = parts[0].trim();
     ko = parts[1].trim();
   } else if (raw.product_name.includes("-")) {
     const parts = raw.product_name.split("-");
-    en = parts[0].trim();
+    if (!raw.eng_product_name) en = parts[0].trim();
     ko = parts[1].trim();
   }
 

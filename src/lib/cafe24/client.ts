@@ -19,6 +19,7 @@ export interface Cafe24RawProduct {
   tiny_image?: string;
   small_image?: string;
   has_option: 'T' | 'F';
+  eng_product_name?: string;
   additional_image?: Array<{
     image_path: string;
   }>;
@@ -36,8 +37,68 @@ export interface Cafe24RawProduct {
   }>;
 }
 
-export interface Cafe24ApiResponse {
-  product: Cafe24RawProduct;
+/** productsdetail 엔드포인트 실제 응답 (키 이름이 product가 아님) */
+interface Cafe24ProductDetailPayload {
+  product_no: number;
+  product_code?: string | null;
+  product_name: string;
+  eng_product_name?: string | null;
+  price: string | number;
+  retail_price?: string | number | null;
+  simple_description?: string | null;
+  description?: string | null;
+  detail_image?: string;
+  list_image?: string;
+  small_image?: string;
+  tiny_image?: string;
+  additional_images?: Array<{ image_path?: string }>;
+  additional_information?: Array<{ key: string; value: string }> | null;
+  has_option?: "T" | "F";
+  options?: Cafe24RawProduct["options"];
+}
+
+interface Cafe24DetailApiResponse {
+  productsdetail: Cafe24ProductDetailPayload;
+}
+
+function parseCafe24Price(value: string | number | null | undefined): number {
+  if (value == null) return 0;
+  return typeof value === "number" ? value : parseFloat(value) || 0;
+}
+
+function mapProductDetailToRaw(
+  detail: Cafe24ProductDetailPayload,
+  fallbackProductCode: string,
+): Cafe24RawProduct {
+  const additionalImages =
+    detail.additional_images
+      ?.map((img) => img.image_path)
+      .filter((path): path is string => Boolean(path))
+      .map((image_path) => ({ image_path })) ?? [];
+
+  return {
+    product_no: detail.product_no,
+    product_code: detail.product_code || fallbackProductCode,
+    product_name: detail.product_name,
+    price: parseCafe24Price(detail.price),
+    retail_price: parseCafe24Price(detail.retail_price ?? detail.price),
+    simple_description: detail.simple_description ?? undefined,
+    description: detail.description ?? undefined,
+    detail_image: detail.detail_image,
+    list_image: detail.list_image,
+    small_image: detail.small_image,
+    tiny_image: detail.tiny_image,
+    has_option: detail.has_option ?? "F",
+    additional_image:
+      additionalImages.length > 0
+        ? additionalImages
+        : detail.detail_image
+          ? [{ image_path: detail.detail_image }]
+          : undefined,
+    additional_information: detail.additional_information ?? undefined,
+    options: detail.options,
+    eng_product_name: detail.eng_product_name ?? undefined,
+  };
 }
 
 // 로컬 환경이나 인증 키가 부족할 때 사용할 실제 같은 CAFE24 API 응답 목업 데이터
@@ -171,13 +232,28 @@ export async function getCafe24Product(productCode: string): Promise<Cafe24RawPr
       )
     }
 
-    const data = (await res.json()) as Cafe24ApiResponse;
-    
-    if (!data || !data.product) {
-      throw new Error("CAFE24 API 응답 규격이 올바르지 않습니다.");
+    const data = (await res.json()) as Cafe24DetailApiResponse & {
+      product?: Cafe24ProductDetailPayload;
+    };
+
+    const detail = data.productsdetail ?? data.product;
+    if (!detail) {
+      throw new Error(
+        "CAFE24 API 응답 규격이 올바르지 않습니다. (productsdetail 키 없음)",
+      );
     }
 
-    return data.product;
+    const resolvedCode =
+      detail.product_code && detail.product_code !== ""
+        ? detail.product_code
+        : productCode;
+
+    const product = mapProductDetailToRaw(detail, resolvedCode);
+    console.log(
+      `[CAFE24 CLIENT] 2단계 성공 - product_no: ${product.product_no}, code: ${product.product_code}`,
+    );
+
+    return product;
   } catch (error) {
     console.error(`[CAFE24 CLIENT ERROR] API 호출 중 오류가 발생하여 데모 데이터로 Fallback합니다:`, error);
     // 운영에 영향이 없도록 에러 발생 시에도 데모 데이터 리턴
