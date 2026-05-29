@@ -139,7 +139,10 @@ export async function getCafe24Product(productCode: string): Promise<Cafe24RawPr
       });
 
       if (!listRes.ok) {
-        throw new Error(`CAFE24 상품 리스트 조회 실패! status: ${listRes.status}`);
+        const listErrorBody = await listRes.text().catch(() => "")
+        throw new Error(
+          `CAFE24 상품 리스트 조회 실패! status: ${listRes.status}, body: ${listErrorBody}`,
+        )
       }
 
       const listData = (await listRes.json()) as Cafe24ListApiResponse;
@@ -162,7 +165,10 @@ export async function getCafe24Product(productCode: string): Promise<Cafe24RawPr
     });
 
     if (!res.ok) {
-      throw new Error(`CAFE24 API HTTP error! status: ${res.status}`);
+      const errorBody = await res.text().catch(() => "")
+      throw new Error(
+        `CAFE24 API HTTP error! status: ${res.status}, body: ${errorBody}`,
+      )
     }
 
     const data = (await res.json()) as Cafe24ApiResponse;
