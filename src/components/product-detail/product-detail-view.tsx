@@ -2,9 +2,10 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, createContext, useContext } from "react"
 
 import { BagPlaceholder } from "@/components/shared/bag-placeholder"
+import { CoffeeProduct } from "@/lib/cafe24/adapter"
 import { useIsMobile } from "@/hooks/use-is-mobile"
 import {
   ACC_TITLES,
@@ -19,7 +20,12 @@ import {
 
 import "@/styles/product-detail.css"
 
-const P = SAMPLE_PRODUCT
+const ProductContext = createContext<CoffeeProduct | null>(null)
+
+function useProduct() {
+  const context = useContext(ProductContext)
+  return context || (SAMPLE_PRODUCT as unknown as CoffeeProduct)
+}
 
 const IconStar = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -28,6 +34,7 @@ const IconStar = () => (
 )
 
 function RoastGauge() {
+  const P = useProduct()
   return (
     <div className="pd-gauge">
       <span className="pd-gauge__dots">
@@ -44,6 +51,7 @@ function RoastGauge() {
 }
 
 function CupNotes() {
+  const P = useProduct()
   return (
     <div className="pd-notes">
       {P.notes.map((n) => (
@@ -56,6 +64,7 @@ function CupNotes() {
 }
 
 function Gallery() {
+  const P = useProduct()
   const [active, setActive] = useState(0)
   const g = P.gallery[active]
 
@@ -101,6 +110,7 @@ function Gallery() {
 }
 
 function BuyPanel({ bigName = false }: { bigName?: boolean }) {
+  const P = useProduct()
   const [size, setSize] = useState("200g")
   const [grind, setGrind] = useState("whole")
   const [qty, setQty] = useState(1)
@@ -288,6 +298,7 @@ function Breadcrumb() {
 }
 
 function DetailSection() {
+  const P = useProduct()
   return (
     <section className="pd-section">
       <div className="pd-detail__roaster">
@@ -556,20 +567,24 @@ function RelatedSection() {
   )
 }
 
-export function ProductDetailView() {
+export function ProductDetailView({ product }: { product?: CoffeeProduct }) {
   const isMobile = useIsMobile()
   const mobileClass = isMobile === true ? "m" : isMobile === false ? "d" : ""
 
+  const activeProduct = product || (SAMPLE_PRODUCT as unknown as CoffeeProduct)
+
   return (
-    <div className={`pd ${mobileClass}`.trim()}>
-      <Breadcrumb />
-      <Hero isMobile={isMobile === true} />
-      <DetailSection />
-      <FoodInfoSection />
-      <AccordionSection />
-      <ReviewsSection />
-      <QnASection />
-      <RelatedSection />
-    </div>
+    <ProductContext.Provider value={activeProduct}>
+      <div className={`pd ${mobileClass}`.trim()}>
+        <Breadcrumb />
+        <Hero isMobile={isMobile === true} />
+        <DetailSection />
+        <FoodInfoSection />
+        <AccordionSection />
+        <ReviewsSection />
+        <QnASection />
+        <RelatedSection />
+      </div>
+    </ProductContext.Provider>
   )
 }
