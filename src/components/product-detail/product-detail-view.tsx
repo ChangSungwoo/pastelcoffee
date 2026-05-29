@@ -38,9 +38,7 @@ function RoastGauge() {
           />
         ))}
       </span>
-      <span className="pd-gauge__cap">
-        Light&nbsp;·&nbsp;{P.roast}
-      </span>
+      <span className="pd-gauge__cap">{P.roast}</span>
     </div>
   )
 }
@@ -494,6 +492,7 @@ function QnASection() {
               className="pd-qna__q"
               role={it.done ? "button" : undefined}
               tabIndex={it.done ? 0 : undefined}
+              aria-expanded={it.done ? open === i : undefined}
               onClick={() => it.done && setOpen(open === i ? -1 : i)}
               onKeyDown={(e) => {
                 if (it.done && (e.key === "Enter" || e.key === " ")) {
@@ -509,6 +508,11 @@ function QnASection() {
               >
                 {it.done ? "답변완료" : "답변대기"}
               </span>
+              {it.done ? (
+                <span className="pd-qna__chev" aria-hidden="true">
+                  +
+                </span>
+              ) : null}
             </div>
             {it.done ? (
               <div className="pd-qna__a">

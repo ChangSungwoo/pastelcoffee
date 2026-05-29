@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 
 import { useIsMobile } from "@/hooks/use-is-mobile"
 import { MAIN_NAV } from "@/lib/constants"
@@ -31,6 +31,12 @@ const IconBag = () => (
 const IconMenu = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true">
     <path d="M3 7h18M3 12h18M3 17h18" />
+  </svg>
+)
+
+const IconClose = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M6 6l12 12M18 6L6 18" />
   </svg>
 )
 
@@ -76,17 +82,41 @@ function HeaderDesktop() {
 }
 
 function HeaderMobile() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   return (
-    <div className={styles.mobile}>
-      <button type="button" className={styles.iconBtn} aria-label="menu">
-        <IconMenu />
-      </button>
-      <Link href="/" className={styles.wordmarkMobile} aria-label="Pastel Coffee Works">
-        Pastel Coffee Works
-      </Link>
-      <button type="button" className={styles.iconBtn} aria-label="cart">
-        <IconBag />
-      </button>
+    <div
+      className={`${styles.mobile} ${menuOpen ? styles.headerMenuOpen : ""}`.trim()}
+    >
+      <div className={styles.mobileBar}>
+        <button
+          type="button"
+          className={styles.iconBtn}
+          aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? <IconClose /> : <IconMenu />}
+        </button>
+        <Link href="/" className={styles.wordmarkMobile} aria-label="Pastel Coffee Works">
+          Pastel Coffee Works
+        </Link>
+        <button type="button" className={styles.iconBtn} aria-label="cart">
+          <IconBag />
+        </button>
+      </div>
+      <nav className={styles.mobnav} aria-label="Main">
+        {MAIN_NAV.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={styles.mobnavLink}
+            onClick={() => setMenuOpen(false)}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </nav>
     </div>
   )
 }

@@ -44,8 +44,9 @@
   font-style: italic;
   font-weight: 500;
   font-size: 64px;
+  line-height: 1;
   color: var(--ink);
-  display: inline-block;
+  display: block;
 }
 
 .titleKo {
@@ -53,7 +54,8 @@
   font-weight: 700;
   font-size: 28px;
   color: var(--ink-2);
-  display: inline-block;
+  display: block;
+  margin-top: 14px;
 }
 
 .notes {
@@ -142,6 +144,7 @@
 
   .titleKo {
     font-size: 20px;
+    margin-top: 10px;
   }
 
   .notes {

@@ -32,7 +32,6 @@ export function Champion() {
           <p className={sectionStyles.eyebrow}>— FROM OUR HEAD ROASTER —</p>
           <h2 id="champion-heading" className={styles.title}>
             <span className={styles.titleEn}>Lolly.</span>
-            <br />
             <span className={styles.titleKo}>롤리 · 챔피언스 블렌드</span>
           </h2>
           <p className={styles.notes}>

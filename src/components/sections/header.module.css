@@ -5,15 +5,51 @@
 
 .desktop {
   display: block;
-  padding: 18px 60px 14px;
+  padding: 18px 60px 16px;
 }
 
 .mobile {
+  display: block;
+  padding: 0;
+}
+
+.mobileBar {
   display: flex;
   padding: 14px 16px;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+}
+
+.mobnav {
+  display: none;
+  flex-direction: column;
+  border-top: 1px solid var(--ink-line);
+  background: var(--paper-2);
+}
+
+.headerMenuOpen .mobnav {
+  display: flex;
+}
+
+.mobnavLink {
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--ink-line);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.mobnavLink:last-child {
+  border-bottom: 0;
+}
+
+.mobnavLink:active {
+  background: var(--paper-3);
 }
 
 .top {
@@ -122,10 +158,11 @@
 }
 
 .nav {
-  margin-top: 16px;
+  margin-top: 18px;
   display: flex;
   justify-content: center;
   gap: 22px;
+  padding-bottom: 2px;
   font-family: var(--serif);
   font-size: 13px;
   letter-spacing: 0.38em;
@@ -161,6 +198,10 @@
   padding-left: 0.3em;
   white-space: nowrap;
   text-decoration: none;
+}
+
+.wordmarkMobile:hover {
+  color: var(--ink-2);
 }
 
 .mobile .iconBtn svg {
