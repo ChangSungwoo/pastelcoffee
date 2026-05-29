@@ -58,7 +58,7 @@ export function Champion() {
               <EditorialButton href="#" variant="solid" size="lg">
                 장바구니에 담기
               </EditorialButton>
-              <EditorialButton href="#" variant="ghost" size="lg">
+              <EditorialButton href="/product/P00000FM" variant="ghost" size="lg">
                 자세히 보기 →
               </EditorialButton>
             </div>
